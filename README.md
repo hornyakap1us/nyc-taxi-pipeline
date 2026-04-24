@@ -98,3 +98,7 @@ Ideas to go further and strengthen your portfolio:
 - Swap Prefect for Airflow (Astronomer free tier) to compare orchestrators
 - Add a Looker Studio dashboard connected to `fct_trips`
 - Implement CI with GitHub Actions running `dbt test` on pull requests
+
+## Data lineage
+
+![dbt lineage graph](docs/lineage.png)
