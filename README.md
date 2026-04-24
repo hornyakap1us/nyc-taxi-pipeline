@@ -70,12 +70,15 @@ prefect deploy                # deploy to Prefect Cloud
 
 ## Data lineage
 
+![dbt lineage graph](docs/lineage.png)
+
 ```
 bigquery-public-data (source)
-    └── stg_yellow_trips          (staging)
-            └── int_trips_enriched    (intermediate)
-                    ├── fct_trips         (fact table)
-                    └── dim_pickup_zones  (dimension table)
+    └── stg_yellow_trips          (staging — Silver)
+            └── int_trips_enriched    (intermediate — Silver)
+                    ├── fct_trips             (fact table — Gold, 8.5M rows)
+                    ├── dim_time_of_day       (dimension — Gold, 5 rows)
+                    └── dim_pickup_zones      (dimension — Gold, 260 rows)
 ```
 
 ---
@@ -98,7 +101,3 @@ Ideas to go further and strengthen your portfolio:
 - Swap Prefect for Airflow (Astronomer free tier) to compare orchestrators
 - Add a Looker Studio dashboard connected to `fct_trips`
 - Implement CI with GitHub Actions running `dbt test` on pull requests
-
-## Data lineage
-
-![dbt lineage graph](docs/lineage.png)
