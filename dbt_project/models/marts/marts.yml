@@ -1,0 +1,50 @@
+# models/marts/marts.yml
+
+version: 2
+
+models:
+  - name: fct_trips
+    description: >
+      Core fact table. One row per taxi trip.
+      Incrementally updated daily. Partitioned by pickup_date,
+      clustered by time_of_day and payment_method for query efficiency.
+
+    columns:
+      - name: trip_key
+        description: "Surrogate key — unique identifier for each trip."
+        tests:
+          - unique
+          - not_null
+
+      - name: pickup_date
+        tests:
+          - not_null
+
+      - name: time_of_day
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['morning_rush', 'midday', 'evening_rush', 'evening', 'overnight']
+
+      - name: day_type
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['weekday', 'weekend']
+
+      - name: payment_method
+        tests:
+          - accepted_values:
+              values: ['credit_card', 'cash', 'no_charge', 'dispute', 'other']
+
+      - name: total_amount
+        tests:
+          - not_null
+
+  - name: dim_time_of_day
+    description: "Lookup table for time-of-day categories and sort order."
+    columns:
+      - name: time_of_day
+        tests:
+          - unique
+          - not_null

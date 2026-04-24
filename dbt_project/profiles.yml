@@ -1,0 +1,29 @@
+# profiles.yml
+# -----------
+# Place this file at ~/.dbt/profiles.yml  (NOT inside the dbt_project folder)
+# OR set DBT_PROFILES_DIR=/path/to/dbt_project in your environment.
+#
+# IMPORTANT: Never commit this file — it contains credentials.
+
+nyc_taxi:
+  target: dev
+  outputs:
+    dev:
+      type: bigquery
+      method: service-account
+      project: "{{ env_var('GCP_PROJECT_ID') }}"
+      dataset: "{{ env_var('BQ_DBT_DATASET') }}"   # e.g. dbt_nyc_taxi
+      keyfile: "{{ env_var('GOOGLE_APPLICATION_CREDENTIALS') }}"
+      location: US
+      timeout_seconds: 300
+      threads: 4
+
+    prod:
+      type: bigquery
+      method: service-account
+      project: "{{ env_var('GCP_PROJECT_ID') }}"
+      dataset: "{{ env_var('BQ_DBT_DATASET') }}"
+      keyfile: "{{ env_var('GOOGLE_APPLICATION_CREDENTIALS') }}"
+      location: US
+      timeout_seconds: 300
+      threads: 8

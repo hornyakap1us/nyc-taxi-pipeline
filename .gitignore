@@ -1,0 +1,19 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+.env
+
+# dbt
+dbt_project/target/
+dbt_project/dbt_packages/
+dbt_project/logs/
+dbt_project/profiles.yml    # credentials — keep out of git
+
+# GCP
+*.json                       # service account keys
+
+# IDE
+.vscode/
+.idea/

@@ -1,0 +1,41 @@
+# models/staging/sources.yml
+# --------------------------
+# Declares the raw BigQuery table as a dbt source.
+# This lets dbt track lineage all the way back to the raw layer,
+# and lets you run `dbt source freshness` to check for stale data.
+
+version: 2
+
+sources:
+  - name: raw
+    database: "{{ env_var('GCP_PROJECT_ID') }}"
+    schema: raw
+    description: "Raw NYC taxi data loaded by the Python ingestion script."
+
+    freshness:
+      warn_after:  {count: 24, period: hour}
+      error_after: {count: 48, period: hour}
+    loaded_at_field: pickup_datetime
+
+    tables:
+      - name: yellow_trips
+        description: "NYC yellow taxi trip records from the BigQuery public dataset."
+        columns:
+          - name: vendor_id
+            description: "Code indicating the TPEP provider."
+          - name: pickup_datetime
+            description: "Date and time when the meter was engaged."
+            tests:
+              - not_null
+          - name: dropoff_datetime
+            description: "Date and time when the meter was disengaged."
+            tests:
+              - not_null
+          - name: passenger_count
+            description: "Number of passengers in the vehicle."
+          - name: trip_distance
+            description: "Elapsed trip distance in miles."
+          - name: fare_amount
+            description: "Time-and-distance fare calculated by the meter."
+          - name: total_amount
+            description: "Total amount charged to passengers."

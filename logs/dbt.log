@@ -1,0 +1,16 @@
+[0m10:26:49.214367 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000002024BED4B10>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000002024BED4710>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000002024BED45D0>]}
+
+
+============================== 10:26:49.223948 | 498a747f-e331-4e5b-b7dd-23b7ca8e6c7f ==============================
+[0m10:26:49.223948 [info ] [MainThread]: Running with dbt=1.7.0
+[0m10:26:49.227456 [debug] [MainThread]: running dbt with arguments {'printer_width': '80', 'indirect_selection': 'eager', 'log_cache_events': 'False', 'write_json': 'True', 'partial_parse': 'True', 'cache_selected_only': 'False', 'profiles_dir': 'C:\\Users\\HORNYAK2\\.dbt', 'version_check': 'True', 'debug': 'False', 'log_path': 'logs', 'warn_error': 'None', 'fail_fast': 'False', 'use_colors': 'True', 'use_experimental_parser': 'False', 'no_print': 'None', 'quiet': 'False', 'warn_error_options': 'WarnErrorOptions(include=[], exclude=[])', 'invocation_command': 'dbt debug', 'log_format': 'default', 'introspect': 'True', 'target_path': 'None', 'static_parser': 'True', 'send_anonymous_usage_stats': 'True'}
+[0m10:26:49.229997 [info ] [MainThread]: dbt version: 1.7.0
+[0m10:26:49.232682 [info ] [MainThread]: python version: 3.11.15
+[0m10:26:49.233677 [info ] [MainThread]: python path: C:\Users\HORNYAK2\AppData\Local\anaconda3\envs\de_project\python.exe
+[0m10:26:49.234678 [info ] [MainThread]: os info: Windows-10-10.0.26100-SP0
+[0m10:26:49.244479 [error] [MainThread]: Encountered an error:
+Parsing Error
+  Env var required but not provided: 'GCP_PROJECT_ID'
+[0m10:26:49.245474 [debug] [MainThread]: Command `dbt debug` failed at 10:26:49.245474 after 0.12 seconds
+[0m10:26:49.246474 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000002024BED4090>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000002024BED4710>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x0000020244A12A50>]}
+[0m10:26:49.247476 [debug] [MainThread]: Flushing usage events

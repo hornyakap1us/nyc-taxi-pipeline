@@ -1,0 +1,8 @@
+google-cloud-bigquery==3.11.4
+db-dtypes==1.1.1
+dbt-core==1.7.0
+dbt-bigquery==1.7.0
+prefect==2.14.0
+python-dotenv==1.0.0
+pandas==2.1.0
+pyarrow==13.0.0

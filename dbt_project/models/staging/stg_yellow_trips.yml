@@ -1,0 +1,43 @@
+# models/staging/stg_yellow_trips.yml
+# ------------------------------------
+# Column-level tests for the staging model.
+# Run with: dbt test --select stg_yellow_trips
+
+version: 2
+
+models:
+  - name: stg_yellow_trips
+    description: "Cleaned and typed NYC yellow taxi trips. One row per trip."
+
+    columns:
+      - name: pickup_at
+        description: "Timestamp when the meter was engaged."
+        tests:
+          - not_null
+
+      - name: dropoff_at
+        description: "Timestamp when the meter was disengaged."
+        tests:
+          - not_null
+
+      - name: trip_distance_miles
+        description: "Elapsed trip distance in miles. Always > 0 after filtering."
+        tests:
+          - not_null
+
+      - name: total_amount
+        description: "Total amount charged. Always > 0 after filtering."
+        tests:
+          - not_null
+
+      - name: payment_type
+        description: "How the trip was paid."
+        tests:
+          - accepted_values:
+              values: ['1', '2', '3', '4', '5', '6']
+              # 1=Credit, 2=Cash, 3=No charge, 4=Dispute, 5=Unknown, 6=Voided
+
+      - name: trip_duration_minutes
+        description: "Calculated trip duration in minutes."
+        tests:
+          - not_null

@@ -1,0 +1,28 @@
+name: nyc_taxi
+version: "1.0.0"
+config-version: 2
+
+profile: nyc_taxi   # matches the profile name in profiles.yml
+
+# File path defaults
+model-paths:  ["models"]
+test-paths:   ["tests"]
+macro-paths:  ["macros"]
+target-path:  "target"
+clean-targets: ["target", "dbt_packages"]
+
+# Apply default configs by folder
+models:
+  nyc_taxi:
+    staging:
+      +schema:       staging        # writes to dbt_nyc_taxi_staging
+      +materialized: view           # staging models are cheap views
+    intermediate:
+      +schema:       intermediate
+      +materialized: view
+    marts:
+      +schema:       marts
+      +materialized: table          # mart models are real tables
+
+# dbt packages (defined in packages.yml)
+# Run `dbt deps` to install
