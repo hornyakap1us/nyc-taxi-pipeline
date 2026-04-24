@@ -48,3 +48,27 @@ models:
         tests:
           - unique
           - not_null
+  
+  - name: dim_pickup_zones
+    description: "NYC taxi zone lookup table. Joins to fct_trips on pickup_location_id and dropoff_location_id."
+    columns:
+      - name: zone_id
+        description: "Unique zone identifier. Foreign key to fct_trips.pickup_location_id and dropoff_location_id."
+        tests:
+          - unique
+          - not_null
+      - name: zone_name
+        description: "Human readable zone name e.g. JFK Airport, Times Square."
+        tests:
+          - not_null
+      - name: borough
+        description: "NYC borough the zone belongs to."
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['Manhattan', 'Brooklyn', 'Queens', 'Bronx', 'Staten Island', 'EWR']
+      - name: borough_region
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['core', 'outer', 'unknown']
