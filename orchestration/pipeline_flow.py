@@ -24,7 +24,7 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 from prefect import flow, task, get_run_logger
-from prefect.client.schemas.schedules import CronSchedule
+#from prefect.client.schemas.schedules import CronSchedule
 
 load_dotenv()
 
@@ -116,10 +116,15 @@ def dbt_generate_docs() -> None:
 # Flow
 # ─────────────────────────────────────────────
 
+##@flow(
+##    name="nyc-taxi-pipeline",
+##    description="Daily NYC taxi data pipeline: ingest → dbt run → dbt test",
+##    # Uncomment to add a schedule when deployed to Prefect Cloud:
+##    # schedule=CronSchedule(cron="0 6 * * *", timezone="America/New_York"),
+##)
 @flow(
     name="nyc-taxi-pipeline",
     description="Daily NYC taxi data pipeline: ingest → dbt run → dbt test",
-    # Uncomment to add a schedule when deployed to Prefect Cloud:
     # schedule=CronSchedule(cron="0 6 * * *", timezone="America/New_York"),
 )
 def nyc_taxi_pipeline(target_date: date | None = None) -> None:
@@ -136,8 +141,14 @@ def nyc_taxi_pipeline(target_date: date | None = None) -> None:
 
     logger.info(f"Starting pipeline for {target_date}")
 
-    # Step 1: Ingest
-    rows = ingest_raw_data(2022, 4)
+    ## # Step 1: Ingest
+    ## - deprecated on 4/27/2026
+    ## rows = ingest_raw_data(2022, 4)
+
+    ## Step 1: Ingest - cycle through 2022 months
+    import datetime
+    current_month = ((datetime.date.today().month - 1) % 6) + 1
+    rows = ingest_raw_data(2022, current_month)
 
     # Step 2: Transform (dbt run depends on ingest finishing)
     dbt_run(wait_for=[rows])
