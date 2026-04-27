@@ -24,7 +24,7 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 from prefect import flow, task, get_run_logger
-from prefect.schedules import CronSchedule
+from prefect.client.schemas.schedules import CronSchedule
 
 load_dotenv()
 
@@ -39,17 +39,17 @@ DBT_DIR       = PROJECT_ROOT / "dbt_project"
 # ─────────────────────────────────────────────
 
 @task(name="ingest-raw-data", retries=2, retry_delay_seconds=60)
-def ingest_raw_data(target_date: date) -> int:
-    """Copy one day's taxi data into BigQuery raw schema."""
+def ingest_raw_data(year: int, month: int) -> int:
     logger = get_run_logger()
-    logger.info(f"Ingesting data for {target_date}")
+    logger.info(f"Ingesting data for {year}-{month:02d}")
 
-    # Import here so Prefect tracks this as a task dependency
     import sys
     sys.path.insert(0, str(INGESTION_DIR))
-    from ingest import ingest_range
+    from ingest import ingest_month
+    from bq_client import get_client
 
-    rows = ingest_range(target_date, target_date)
+    client = get_client()
+    rows = ingest_month(year, month, client)
     logger.info(f"Ingested {rows:,} rows")
     return rows
 
@@ -137,7 +137,7 @@ def nyc_taxi_pipeline(target_date: date | None = None) -> None:
     logger.info(f"Starting pipeline for {target_date}")
 
     # Step 1: Ingest
-    rows = ingest_raw_data(target_date)
+    rows = ingest_raw_data(2022, 4)
 
     # Step 2: Transform (dbt run depends on ingest finishing)
     dbt_run(wait_for=[rows])
