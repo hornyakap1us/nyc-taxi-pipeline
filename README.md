@@ -101,3 +101,31 @@ Ideas to go further and strengthen your portfolio:
 - Swap Prefect for Airflow (Astronomer free tier) to compare orchestrators
 - Add a Looker Studio dashboard connected to `fct_trips`
 - Implement CI with GitHub Actions running `dbt test` on pull requests
+
+## Orchestration
+
+The full pipeline is orchestrated with Prefect. Each step runs as a separate task with retries configured, and the entire flow is logged to Prefect Cloud.
+
+### Pipeline flow
+
+ingest-raw-data → dbt-run → dbt-test → dbt-docs
+
+### Run the pipeline locally
+```bash
+cd orchestration
+python pipeline_flow.py
+```
+
+### Flow run monitoring
+Flow runs are logged to Prefect Cloud and can be monitored at app.prefect.cloud. Each run shows:
+- Task-level logs and timing
+- Pass/fail status for each step
+- Retry attempts if a task fails
+- Full pipeline duration
+
+### Prefect concepts demonstrated
+- `@flow` and `@task` decorators
+- Task retries with `retries=2, retry_delay_seconds=60`
+- Task dependencies with `wait_for`
+- Integration with dbt via subprocess
+- Logging with `get_run_logger()`
